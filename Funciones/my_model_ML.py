@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import GridSearchCV
 
 
-model_data = pd.read_csv('C:/Users/Sebastián Bello/Downloads/PI01_ML_OPS_API/Dataset/Data_ML.csv', index_col=0)
+model_data = pd.read_csv('Dataset/Data_ML.csv', index_col=0)
 
 
 

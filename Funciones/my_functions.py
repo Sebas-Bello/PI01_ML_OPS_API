@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-data = pd.read_csv('C:/Users/Sebastián Bello/Downloads/PI01_ML_OPS_API/Dataset/Data_Clean_steam_games.csv',index_col=0)
+data = pd.read_csv('Dataset/Data_Clean_steam_games.csv', index_col=0)
 
 
 #API 1
