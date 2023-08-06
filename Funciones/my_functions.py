@@ -22,12 +22,13 @@ def genero(Año: str):
         genres_counts = {}
 
         for genres_list in df_filtrado['genres']:
-            genres = genres_list.split(', ')
-            for genre in genres:
-                if genre in genres_counts:
-                    genres_counts[genre] += 1
-                else:
-                    genres_counts[genre] = 1
+            if isinstance(genres_list, str):  # Verificar si es una cadena antes de dividir
+                genres = genres_list.split(', ')
+                for genre in genres:
+                    if genre in genres_counts:
+                        genres_counts[genre] += 1
+                    else:
+                        genres_counts[genre] = 1
 
         # Ordenar y tomar los 5 géneros con más registros
         top_5_generos = dict(sorted(genres_counts.items(), key=lambda item: item[1], reverse=True)[:5])
@@ -38,7 +39,7 @@ def genero(Año: str):
         return {año_num: top_5_generos}
     except ValueError as e:
         opciones_disponibles = '\n'.join(map(str, sorted(data['year_release'].unique())))
-        return print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
+        return  print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
     
     
 #API 2
