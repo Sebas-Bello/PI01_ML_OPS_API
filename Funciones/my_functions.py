@@ -6,7 +6,7 @@ data = pd.read_csv('Dataset/Data_Clean_steam_games.csv', index_col=0)
 
 
 #API 1
-
+ 
 def genero(Año: str):
     try:
         año_str = str(Año)  # Convertir a cadena
@@ -19,15 +19,23 @@ def genero(Año: str):
         df_filtrado = data[data['year_release'] == año_num]
 
         # Contar los registros por género
-        conteo_por_genero = df_filtrado['genres'].value_counts()
+        genres_counts = {}
 
-        # Tomar los 5 géneros con más registros y devolverlos como un diccionario
-        top_5_generos_dict = conteo_por_genero.head(5).to_dict()
+        for genres_list in df_filtrado['genres']:
+            genres = genres_list.split(', ')
+            for genre in genres:
+                if genre in genres_counts:
+                    genres_counts[genre] += 1
+                else:
+                    genres_counts[genre] = 1
+
+        # Ordenar y tomar los 5 géneros con más registros
+        top_5_generos = dict(sorted(genres_counts.items(), key=lambda item: item[1], reverse=True)[:5])
         
-        if not top_5_generos_dict:
+        if not top_5_generos:
             return f"No hay géneros disponibles para el año {Año}"
 
-        return {año_num: top_5_generos_dict}
+        return {año_num: top_5_generos}
     except ValueError as e:
         opciones_disponibles = '\n'.join(map(str, sorted(data['year_release'].unique())))
         return  print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
@@ -64,7 +72,7 @@ def juegos(Año: str):
     
 
 #API 3
-
+   
 def specs(Año: str):
     try:
         año_str = str(Año)  # Convertir a cadena
@@ -75,23 +83,28 @@ def specs(Año: str):
         
         # Filtrar el DataFrame para obtener solo las filas del año ingresado
         df_filtrado = data[data['year_release'] == año_num]
+
+        # Contar los registros por género
+        genres_counts = {}
+
+        for genres_list in df_filtrado['specs']:
+            genres = genres_list.split(', ')
+            for genre in genres:
+                if genre in genres_counts:
+                    genres_counts[genre] += 1
+                else:
+                    genres_counts[genre] = 1
+
+        # Ordenar y tomar los 5 géneros con más registros
+        top_5_generos = dict(sorted(genres_counts.items(), key=lambda item: item[1], reverse=True)[:5])
         
-        # Agrupar los datos por specs y contar los registros
-        specs_grupo = df_filtrado.groupby('specs').size()
-        
-        # Ordenar los specs según la cantidad de registros de forma descendente
-        specs_repetidos = specs_grupo.sort_values(ascending=False)
-        
-        # Tomar los 5 specs más repetidos y devolverlos como un diccionario
-        top_5_specs = specs_repetidos.head(5).to_dict()
-        
-        if not top_5_specs:
-            return f"No hay especificaciones disponibles para el año {Año}"
-        
-        return {año_num: top_5_specs}
+        if not top_5_generos:
+            return f"No hay géneros disponibles para el año {Año}"
+
+        return {año_num: top_5_generos}
     except ValueError as e:
         opciones_disponibles = '\n'.join(map(str, sorted(data['year_release'].unique())))
-        return print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
+        return  print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
     
 
 #API 4
