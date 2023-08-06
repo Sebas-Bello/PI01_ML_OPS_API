@@ -5,7 +5,7 @@ import ast
 data = pd.read_csv('Dataset/Data_Clean_steam_games.csv', index_col=0)
 
 
-#API 1
+# API 1
  
 def genero(Año: str):
     try:
@@ -38,7 +38,7 @@ def genero(Año: str):
         return {año_num: top_5_generos}
     except ValueError as e:
         opciones_disponibles = '\n'.join(map(str, sorted(data['year_release'].unique())))
-        return  print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
+        return print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
     
     
 #API 2
