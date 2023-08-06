@@ -86,23 +86,24 @@ def specs(Año: str):
         df_filtrado = data[data['year_release'] == año_num]
 
         # Contar los registros por género
-        genres_counts = {}
+        specs_counts = {}
 
-        for genres_list in df_filtrado['specs']:
-            genres = genres_list.split(', ')
-            for genre in genres:
-                if genre in genres_counts:
-                    genres_counts[genre] += 1
-                else:
-                    genres_counts[genre] = 1
+        for specs_list in df_filtrado['specs']:
+            if isinstance(specs_list, str):  # Verificar si es una cadena antes de dividir
+                specs = specs_list.split(', ')
+                for spec in specs:
+                    if spec in specs_counts:
+                        specs_counts[spec] += 1
+                    else:
+                        specs_counts[spec] = 1
 
         # Ordenar y tomar los 5 géneros con más registros
-        top_5_generos = dict(sorted(genres_counts.items(), key=lambda item: item[1], reverse=True)[:5])
+        top_5_specs = dict(sorted(specs_counts.items(), key=lambda item: item[1], reverse=True)[:5])
         
-        if not top_5_generos:
+        if not top_5_specs:
             return f"No hay géneros disponibles para el año {Año}"
 
-        return {año_num: top_5_generos}
+        return {año_num: top_5_specs}
     except ValueError as e:
         opciones_disponibles = '\n'.join(map(str, sorted(data['year_release'].unique())))
         return  print(f"Error: {e}\nEl año '{Año}' no es válido. Años disponibles:\n{opciones_disponibles}")
